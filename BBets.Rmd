@@ -1,10 +1,8 @@
 ---
 title: "Brownlows Bets"
-author: "Your Name"
-date: "Year 2019"
+author: "Melissa Markakis"
+date: "November 13, 2019"
 output:
-  pdf_document:
-    toc: yes
   html_document:
     number_sections: yes
     toc: yes
@@ -54,20 +52,54 @@ varstor[j]=brownlow
 }
 hist(varstor)
 var(varstor)
-
+print(paste('average return = ', mean(varstor)))
 ```
 
 
 <!--Explain and display the results of your method of coming up with the estimate of professor Brownlows betting!-->
 
-and include the amount in British pounds
+Usine resampling, I found the average amount made was 503.149
 
 # Confidence interval of Brownlows earning
 
 <!--Explain and display your method of coming up with a 95% confidence interval of  professor Brownlows-->
 
+we assing values for mean, standard deviation, and sample size to rstudio in a formula.
+we use our data to create a code to provide us with a confidence interval.
+
+```{r}
+varSorted = sort(varstor)
+LCL = varSorted[25]
+UCL = varSorted[975]
+print(paste('UCL = ', UCL, 'LCL = ', LCL))
+```
+
 
 # Discussion and Conclusion
 
 <!--Discussion and conclusion here.  If professor Brownlow is consistantly making or losing money how could he change his payout so that his profits center on zero?  Also discuss what size his class should be in order to have his current scheme balance at zero profit.!-->
+I tried payouts of -3, -6, and found eventually that a payoff of -4.39 to one was the 'fair' amount with an average return of 0.38
 
+I found that if the class size = 29, Brownlow about breaks even. If class size = 35 he makes money, class size = 15 he loses money.
+
+```{r}
+days=1:365
+count=1135
+repeatn=1000
+varstor=numeric()
+for (j in 1:repeatn){
+brownlow = 0
+for (i in 1:count) {
+  sam=sample(days,size=33,replace = T)
+  y=duplicated(sam)
+  if (sum(y)>0) brownlow=brownlow+1
+  else brownlow = brownlow - 3.43
+}
+varstor[j]=brownlow
+}
+hist(varstor)
+var(varstor)
+print(paste('average return = ', mean(varstor)))
+```
+
+It appears that this Brownlow may have a bad business set up, if he wants to make a zero profit. I ran the data above with R addtion chunks to display coding that answers my reasoning above. With various changes to class size and payout i found that you would have to have a classsize of 33 with a payoff closer to -3.43 in order to break even base on class size and payout.
